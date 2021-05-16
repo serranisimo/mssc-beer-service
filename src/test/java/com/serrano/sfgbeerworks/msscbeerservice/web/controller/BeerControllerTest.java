@@ -3,7 +3,6 @@ package com.serrano.sfgbeerworks.msscbeerservice.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serrano.sfgbeerworks.msscbeerservice.web.model.BeerDto;
 import com.serrano.sfgbeerworks.msscbeerservice.web.model.BeerStyleEnum;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
@@ -36,7 +32,11 @@ class BeerControllerTest {
     @BeforeEach
     void setUp() {
         validBeer = BeerDto.builder()
-                .id(UUID.randomUUID()).beerName("Test Beer").beerStyle(BeerStyleEnum.ALE).upc(81364232l).build();
+                .beerName("Test Beer")
+                .beerStyle(BeerStyleEnum.ALE)
+                .upc(81364232l)
+                .price(BigDecimal.valueOf(4.33d))
+                .build();
     }
 
     @Test
@@ -52,6 +52,7 @@ class BeerControllerTest {
         String beerDtoToJson = objectMapper.writeValueAsString(beerDto);
 
         mockMvc.perform(post(PATH)
+                .queryParam("beerId", UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoToJson))
                 .andExpect(status().isCreated());
@@ -62,7 +63,7 @@ class BeerControllerTest {
         BeerDto beerDto = validBeer;
         String beerDtoToJson = objectMapper.writeValueAsString(beerDto);
 
-        mockMvc.perform(put(PATH + "/" + beerDto.getId())
+        mockMvc.perform(put(PATH + "/" + UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoToJson))
                 .andExpect(status().isAccepted());
