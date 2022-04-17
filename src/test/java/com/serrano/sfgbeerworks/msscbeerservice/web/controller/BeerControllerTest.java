@@ -28,7 +28,7 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BeerController.class)
-@AutoConfigureRestDocs
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "dev.springframework.guru", uriPort = 80)
 @ExtendWith(RestDocumentationExtension.class)
 class BeerControllerTest {
 
@@ -97,7 +97,7 @@ class BeerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoToJson))
                 .andExpect(status().isCreated())
-                .andDo(document("v1/Beer",
+                .andDo(document("v1/beer",
                     requestFields( // fields not provided by the user at creation: id, version, createDate, lastModufiedDate and price
                             fields.withPath("id").ignored(),
                             fields.withPath("version").ignored(),
@@ -121,6 +121,17 @@ class BeerControllerTest {
                 ));
     }
 
+    @Test
+    void updateBeerById() throws Exception {
+        BeerDto beerDto = validBeer;
+        String beerDtoToJson = objectMapper.writeValueAsString(beerDto);
+
+        mockMvc.perform(put(PATH + "/" + UUID.randomUUID().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(beerDtoToJson))
+                .andExpect(status().isAccepted());
+    }
+
     private static class CostraintFields {
         private final ConstraintDescriptions constraintDescriptions;
 
@@ -133,16 +144,5 @@ class BeerControllerTest {
                     .collectionToDelimitedString(this.constraintDescriptions
                             .descriptionsForProperty(path), ". ")));
         }
-    }
-
-    @Test
-    void updateBeerById() throws Exception {
-        BeerDto beerDto = validBeer;
-        String beerDtoToJson = objectMapper.writeValueAsString(beerDto);
-
-        mockMvc.perform(put(PATH + "/" + UUID.randomUUID().toString())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(beerDtoToJson))
-                .andExpect(status().isAccepted());
     }
 }
