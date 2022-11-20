@@ -63,7 +63,7 @@ class BeerControllerTest {
                 .andExpect(status().isOk()) // test
                 .andDo( // documentation
                         document(
-                                "v1/beer",
+                                "v1/beer-get",
                                 pathParameters(
                                         parameterWithName("beerId").description("UUID of desired beer to get")
                                 ),
@@ -97,7 +97,7 @@ class BeerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoToJson))
                 .andExpect(status().isCreated())
-                .andDo(document("v1/beer",
+                .andDo(document("v1/beer-post", // by adding a suffix a different folder is generated (in order to avoid overwriting)
                     requestFields( // fields not provided by the user at creation: id, version, createDate, lastModufiedDate and price
                             fields.withPath("id").ignored(),
                             fields.withPath("version").ignored(),
