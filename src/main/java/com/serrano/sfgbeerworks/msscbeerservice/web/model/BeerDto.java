@@ -1,5 +1,6 @@
 package com.serrano.sfgbeerworks.msscbeerservice.web.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +22,13 @@ public class BeerDto {
     @Null
     private Integer version;
 
+
+    @JsonFormat(pattern = "yyy-MM-dd'T'HH:mm:ssZ",shape = JsonFormat.Shape.STRING)
     @Null
     private OffsetDateTime createdDate;
 
+
+    @JsonFormat(pattern = "yyy-MM-dd'T'HH:mm:ssZ",shape = JsonFormat.Shape.STRING)
     @Null
     private OffsetDateTime lastModufiedDate;
     @NotBlank
@@ -32,6 +37,7 @@ public class BeerDto {
     @NotNull
     private BeerStyleEnum beerStyle;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Positive
     @NotNull
     private Long upc;
