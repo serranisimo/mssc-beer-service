@@ -1,7 +1,7 @@
 package com.serrano.sfgbeerworks.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.serrano.sfgbeerworks.msscbeerservice.services.BeerService;
+import com.serrano.sfgbeerworks.msscbeerservice.services.order.BeerService;
 import com.serrano.sfgbeerworks.msscbeerservice.web.model.BeerDto;
 import com.serrano.sfgbeerworks.msscbeerservice.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,14 +53,14 @@ class BeerControllerTest {
         validBeer = BeerDto.builder()
                 .beerName("Test Beer")
                 .beerStyle(BeerStyleEnum.ALE)
-                .upc(81364232l)
+                .upc("0081364232l")
                 .price(BigDecimal.valueOf(4.33d))
                 .build();
     }
 
     @Test
     void getBeerById() throws Exception {
-        when(beerService.getById(Mockito.any(UUID.class))).thenReturn(this.validBeer);
+        when(beerService.getById(Mockito.any(UUID.class), Boolean.FALSE)).thenReturn(this.validBeer);
         String beerId = UUID.randomUUID().toString();
         mockMvc.perform(
                 get(PATH + "/" + "{beerId}", beerId)

@@ -2,12 +2,12 @@ package com.serrano.sfgbeerworks.msscbeerservice.bootstrap;
 
 import com.serrano.sfgbeerworks.msscbeerservice.domain.Beer;
 import com.serrano.sfgbeerworks.msscbeerservice.repositories.BeerRepository;
+import com.serrano.sfgbeerworks.msscbeerservice.web.model.BeerStyleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 //@Component
 public class BeerLoader implements CommandLineRunner {
@@ -25,21 +25,21 @@ public class BeerLoader implements CommandLineRunner {
     }
 
     private void loadBeer() {
-        if (beerRepository.count() == 0){
+        if (beerRepository.count() == 3){
             beerRepository.save(Beer.builder()
                     .beerName("Serrano Braeu")
                     .beerStyle("IPA")
                     .quantityToBrew(250)
                     .minOnHand(120)
-                    .upc(1234567890l)
+                    .upc("1234567890l")
                     .price(new BigDecimal("12.95"))
                     .build());
             beerRepository.save(Beer.builder()
                     .beerName("Mansanita Braeu")
-                    .beerStyle("Summer Ale")
+                    .beerStyle(BeerStyleEnum.SAISON.name())
                     .quantityToBrew(125)
                     .minOnHand(75)
-                    .upc(1234567891l)
+                    .upc("1234567891l")
                     .price(new BigDecimal("14.95"))
                     .build());
         }
@@ -47,7 +47,7 @@ public class BeerLoader implements CommandLineRunner {
         System.out.println("--------------------------------------------------------------------");
         System.out.println(beerRepository.count());
         System.out.println("--------------------------------------------------------------------");
-        System.out.println(beerRepository.findAll().iterator().next().getId());
+//        System.out.println(beerRepository.findAll().iterator().next().getId());
     }
 
 

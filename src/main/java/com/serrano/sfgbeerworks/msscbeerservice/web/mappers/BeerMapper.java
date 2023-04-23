@@ -2,11 +2,14 @@ package com.serrano.sfgbeerworks.msscbeerservice.web.mappers;
 
 import com.serrano.sfgbeerworks.msscbeerservice.domain.Beer;
 import com.serrano.sfgbeerworks.msscbeerservice.web.model.BeerDto;
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 
 @Mapper(uses = DateMapper.class)
+@DecoratedWith(BeerMapperDecorator.class)
 public interface BeerMapper {
-    BeerDto BeerToBeerDto(Beer beer);
+    BeerDto beerToBeerDto(Beer beer);
+    BeerDto beerToBeerDtoWithInventory(Beer beer);
 
-    Beer BeerDtoToBeer(BeerDto beerDto);
+    Beer beerDtoToBeer(BeerDto beerDto);
 }
