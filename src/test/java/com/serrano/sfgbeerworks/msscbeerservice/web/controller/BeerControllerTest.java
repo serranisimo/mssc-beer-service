@@ -53,14 +53,14 @@ class BeerControllerTest {
         validBeer = BeerDto.builder()
                 .beerName("Test Beer")
                 .beerStyle(BeerStyleEnum.ALE)
-                .upc("0081364232l")
+                .upc("0081364232")
                 .price(BigDecimal.valueOf(4.33d))
                 .build();
     }
 
     @Test
     void getBeerById() throws Exception {
-        when(beerService.getById(Mockito.any(UUID.class), Boolean.FALSE)).thenReturn(this.validBeer);
+        when(beerService.getById(Mockito.any(UUID.class), Mockito.anyBoolean())).thenReturn(this.validBeer);
         String beerId = UUID.randomUUID().toString();
         mockMvc.perform(
                 get(PATH + "/" + "{beerId}", beerId)
@@ -101,7 +101,6 @@ class BeerControllerTest {
         CostraintFields fields = new CostraintFields(BeerDto.class);
 
         mockMvc.perform(post(PATH)
-                .queryParam("beerId", UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoToJson))
                 .andExpect(status().isCreated())
@@ -135,7 +134,7 @@ class BeerControllerTest {
         BeerDto beerDto = validBeer;
         String beerDtoToJson = objectMapper.writeValueAsString(beerDto);
 
-        mockMvc.perform(put(PATH + "/" + UUID.randomUUID().toString())
+        mockMvc.perform(put(PATH + "/" + UUID.randomUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoToJson))
                 .andExpect(status().isNoContent());
