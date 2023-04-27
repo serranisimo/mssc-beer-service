@@ -33,10 +33,6 @@ public class BeerServiceImpl implements BeerService {
         BeerPagedList beerPagedList;
         Page<Beer> beerPage;
 
-        System.out.println("#########################");
-        System.out.println("listBeers was called");
-        System.out.println("#########################");
-
         if(!StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
             beerPage = beerRepository.findAllByBeerNameAndBeerStyle(beerName, beerStyle, pageRequest);
         } else if (!StringUtils.isEmpty(beerName) && StringUtils.isEmpty(beerStyle)) {
@@ -77,9 +73,6 @@ public class BeerServiceImpl implements BeerService {
     @Cacheable(cacheNames = "beerCache", key = "#beerId", condition = "#showInventoryOnHand == false")
     @Override
     public BeerDto getById(UUID beerId, Boolean showInventoryOnHand) {
-        System.out.println("#########################");
-        System.out.println("getById was called");
-        System.out.println("#########################");
         if (showInventoryOnHand) {
             return beerMapper.beerToBeerDtoWithInventory(
                     beerRepository.findById(beerId).orElseThrow(NotFoundException::new)
@@ -111,12 +104,9 @@ public class BeerServiceImpl implements BeerService {
     }
 
 
-    @Cacheable(cacheNames = "beerCache", key = "#upc")
+    @Cacheable(cacheNames = "beerUpcCache", key = "#upc")
     @Override
     public BeerDto getByUpc(String upc) {
-        System.out.println("#########################");
-        System.out.println("getByUpc was called");
-        System.out.println("#########################");
         return beerMapper.beerToBeerDto(beerRepository.findByUpc(upc));
     }
 }
