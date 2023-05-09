@@ -21,16 +21,11 @@ public class BeerDto implements Serializable {
     static final long serialVersionUID = -4528799043253432436L;
     @Null // this property should only be set from inside the application
     private UUID id;
-
     @Null
     private Integer version;
-
-
     @JsonFormat(pattern = "yyy-MM-dd'T'HH:mm:ssZ",shape = JsonFormat.Shape.STRING)
     @Null
     private OffsetDateTime createdDate;
-
-
     @JsonFormat(pattern = "yyy-MM-dd'T'HH:mm:ssZ",shape = JsonFormat.Shape.STRING)
     @Null
     private OffsetDateTime lastModufiedDate;
@@ -39,16 +34,13 @@ public class BeerDto implements Serializable {
     private String beerName;
     @NotNull
     private BeerStyleEnum beerStyle;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Positive
     @NotNull
     private String upc;
-
     @Positive
     @NotNull
     private BigDecimal price;
-
     @Positive
     private Integer quantityOnHand;
 }
